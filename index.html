@@ -20,9 +20,30 @@
    COLOUR white ground, cobalt deck field, coral accent for play and progress, sleeve colours from each track
    TYPE Do Hyeon display + Noto Sans KR text
    LAYOUT wide: sidebar | home/crate | deck; tablet portrait: content | deck; phone: content + mini bar, deck slides up */
-:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0c0e16);--ink:light-dark(#151722,#eef0f7);--mute:light-dark(#5f6474,#9ca2b5);--line:light-dark(#e4e6ee,#252a3a);--side:light-dark(#f2f4fa,#11141f);--soft:light-dark(#e9edff,#19214a);--pri:light-dark(#2340d9,#7088ff);--deck:light-dark(#2340d9,#16248a);--plate:light-dark(#2f4ce8,#1e2ea0);--hot:#ff5a3c;--danger:light-dark(#c8321c,#ff7a62)}
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0c0e16);--ink:light-dark(#151722,#eef0f7);--mute:light-dark(#5f6474,#9ca2b5);--line:light-dark(#e4e6ee,#252a3a);--side:light-dark(#f2f4fa,#11141f);--soft:light-dark(#e9edff,#19214a);--pri:light-dark(#2340d9,#7088ff);--deck:light-dark(#2340d9,#16248a);--plate:light-dark(#2f4ce8,#1e2ea0);--hot:#ff5a3c;--danger:light-dark(#c8321c,#ff7a62);--onpri:#fff;--onhot:#fff}
 :root[data-theme=light]{color-scheme:light}
 :root[data-theme=dark]{color-scheme:dark}
+:root[data-mode=vocalo]{color-scheme:dark;--bg:#0b0f1f;--ink:#e6fbff;--mute:#8db4c3;--line:#1d2a47;--side:#111934;--soft:#0f3441;--pri:#39c5bb;--onpri:#03181c;--deck:#0a3843;--plate:#0e4e5b;--hot:#ff4fa3;--onhot:#fff;--danger:#ff6b8b}
+:root[data-mode=vocalo] #deck{background-image:linear-gradient(#ffffff0e 1px,transparent 1px),linear-gradient(90deg,#ffffff0e 1px,transparent 1px);background-size:22px 22px}
+:root[data-mode=vocalo] .big{box-shadow:0 0 0 6px #ff4fa333,0 0 28px #ff4fa3aa}
+:root[data-mode=vocalo] .lab{box-shadow:0 0 0 3px #0b0c10,0 0 18px #39c5bb88}
+:root[data-mode=study]{color-scheme:light;--bg:#f3f4ef;--ink:#1e2925;--mute:#5a6862;--line:#dde2d8;--side:#e8ebe3;--soft:#dfeae3;--pri:#2f6b57;--onpri:#fff;--deck:#26453b;--plate:#2f5649;--hot:#e3a63b;--onhot:#1e2925;--danger:#b4452f}
+:root[data-mode=study] .disc{animation-duration:14s}
+:root[data-mode=study] .hero .bg{opacity:.35}
+:root[data-mode=night]{color-scheme:dark;--bg:#0a0b11;--ink:#eceef6;--mute:#989eb4;--line:#22263a;--side:#11131d;--soft:#1b2042;--pri:#8a9bff;--onpri:#0a0b11;--deck:#121838;--plate:#1b2352;--hot:#ff8a5c;--onhot:#1a0c06;--danger:#ff7a62}
+:root[data-mode=pastel]{color-scheme:light;--bg:#fff8fb;--ink:#2b2234;--mute:#7b6c88;--line:#f0dfea;--side:#fbeef5;--soft:#f1e5ff;--pri:#7d58c8;--onpri:#fff;--deck:#7456bf;--plate:#8467cc;--hot:#ff7fa6;--onhot:#2b0f19;--danger:#c63a5a}
+.modes{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.mo{display:grid;gap:8px;text-align:left;padding:10px;border-radius:16px;border:2px solid var(--line);background:var(--bg)}
+.mo.on{border-color:var(--pri)}
+.mo .pv{display:grid;grid-template-columns:1.4fr 1fr;height:76px;border-radius:10px;overflow:hidden}
+.mo .pv i{position:relative;display:block}
+.mo .pv i+i::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:repeating-radial-gradient(circle,#121318 0 1.2px,#22232c 1.2px 2.4px);box-shadow:0 0 0 2px #0b0c10}
+.mo .pv i+i::before{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--h);z-index:1}
+.mo .pv i:first-child::before{content:"";position:absolute;left:10px;top:12px;width:46%;height:8px;border-radius:4px;background:var(--k);opacity:.8}
+.mo .pv i:first-child::after{content:"";position:absolute;left:10px;top:30px;width:30%;height:22px;border-radius:6px;background:var(--a)}
+.md:has(.modes) [data-m="x"]{display:none}
+.mo b{font-size:16px}
+.mo span{font-size:13px;color:var(--mute);margin-top:-6px}
 *{box-sizing:border-box;min-width:0}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent;word-break:keep-all;overflow-wrap:anywhere}
@@ -34,14 +55,15 @@ button:disabled{opacity:.45;cursor:default}
 .i.f{fill:currentColor}
 .i.s{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .disp{font-family:"Do Hyeon","Noto Sans KR",sans-serif;font-weight:400}
-#app{height:100%;display:grid;grid-template-columns:236px minmax(0,1fr) var(--dw,368px)}
+#app{height:100%;display:grid;grid-template-columns:minmax(0,1fr) var(--dw,368px)}
+#side{display:none!important}
 #side{background:var(--side);border-right:1px solid var(--line);overflow-y:auto;padding:24px 14px;display:flex;flex-direction:column;gap:4px}
 .brand{font-size:30px;line-height:1.05;margin:0 10px 18px;display:flex;align-items:center;gap:10px}
 .dot{width:30px;height:30px;border-radius:50%;background:repeating-radial-gradient(circle,#15161c 0 1.5px,#2b2d37 1.5px 3px);position:relative;flex:none}
 .dot::after{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--hot)}
 .nav{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 12px;border-radius:12px;text-align:left;font-weight:500}
 .nav:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
-.nav.on{background:var(--pri);color:#fff}
+.nav.on{background:var(--pri);color:var(--onpri)}
 .nav .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nav .c{font-size:13px;opacity:.75;font-variant-numeric:tabular-nums}
 .sh{display:flex;align-items:center;justify-content:space-between;margin:18px 0 2px 12px;font-size:14px;color:var(--mute);font-weight:500}
@@ -49,7 +71,7 @@ button:disabled{opacity:.45;cursor:default}
 .ib:hover{background:color-mix(in srgb,currentColor 12%,transparent)}
 .sw{width:22px;height:22px;border-radius:6px;flex:none;overflow:hidden}
 .foot{margin:auto 0 0;padding:18px 10px 0;font-size:13px;color:var(--mute);display:grid;gap:6px}
-#sync2{display:none;margin:12px 16px 0;padding:8px 14px;border-radius:12px;background:var(--side);border:1px solid var(--line);font-size:13px;color:var(--mute);gap:4px 14px;align-items:center;flex-wrap:wrap}
+#sync2{display:flex;margin:12px clamp(16px,3vw,36px) 0;padding:8px 14px;border-radius:12px;background:var(--side);border:1px solid var(--line);font-size:13px;color:var(--mute);gap:4px 14px;align-items:center;flex-wrap:wrap}
 .st{display:flex;gap:8px;align-items:baseline}
 .sdot{width:8px;height:8px;border-radius:50%;background:#1fa463;flex:none;transform:translateY(-1px)}
 .sdot.busy{background:#f0a800}
@@ -60,15 +82,18 @@ button:disabled{opacity:.45;cursor:default}
 .cb .i{width:16px;height:16px}
 .imp{margin-top:16px;justify-content:center}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:700;font-size:15px;white-space:nowrap}
-.btn.p{background:var(--pri);color:#fff}
+.btn.p{background:var(--pri);color:var(--onpri)}
 .btn.g{background:color-mix(in srgb,var(--ink) 7%,transparent)}
-.btn.h{background:var(--hot);color:#fff}
+.btn.h{background:var(--hot);color:var(--onhot)}
 .btn.d{background:var(--danger);color:#fff}
 .btn:hover:not(:disabled){filter:brightness(1.07)}
 #main{overflow-y:auto;position:relative}
-#chips{display:none;gap:8px;overflow-x:auto;padding:14px 16px 0;scrollbar-width:none}
+#chips{display:flex;gap:8px;overflow-x:auto;padding:14px clamp(16px,3vw,36px) 0;scrollbar-width:none;align-items:center}
+.tb{display:flex;align-items:center;gap:8px;font-size:24px;padding-right:12px;white-space:nowrap;flex:none;position:sticky;left:0;z-index:2;background:var(--bg);box-shadow:10px 0 10px -6px var(--bg);align-self:stretch}
+.tb .dot{width:24px;height:24px}
+.tb .dot::after{inset:8px}
 #chips button{flex:none;min-height:42px;padding:0 16px;border-radius:999px;background:var(--side);border:1px solid var(--line);font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
-#chips button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+#chips button.on{background:var(--pri);border-color:var(--pri);color:var(--onpri)}
 #chips .sw{width:16px;height:16px;border-radius:4px}
 .head{padding:28px clamp(16px,3vw,36px) 14px;display:grid;gap:14px}
 .head:empty{display:none}
@@ -105,7 +130,7 @@ select{height:46px;border-radius:12px;border:1px solid var(--line);background:va
 .th{overflow:hidden;border-radius:4px;flex:none}
 .vb{position:absolute;left:8px;top:8px;z-index:2;background:#000b;color:#fff;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;display:flex;align-items:center;gap:4px}
 .vb .i{width:14px;height:14px}
-.pp{position:absolute;right:8px;bottom:8px;width:46px;height:46px;border-radius:50%;background:var(--hot);color:#fff;display:grid;place-items:center;opacity:0;transform:translateY(6px);transition:.2s;box-shadow:0 6px 12px -4px #0006}
+.pp{position:absolute;right:8px;bottom:8px;width:46px;height:46px;border-radius:50%;background:var(--hot);color:var(--onhot);display:grid;place-items:center;opacity:0;transform:translateY(6px);transition:.2s;box-shadow:0 6px 12px -4px #0006}
 .card:hover .pp,.card.on .pp{opacity:1;transform:none}
 @media(hover:none){.pp{display:none}.card.on .pp{display:grid}}
 .ct{display:flex;gap:2px;margin-top:10px;align-items:flex-start}
@@ -114,7 +139,7 @@ select{height:46px;border-radius:12px;border:1px solid var(--line);background:va
 .ct span,.ti span{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .more{width:40px;height:44px;margin:-8px -10px 0 0;display:grid;place-items:center;color:var(--mute);border-radius:10px}
 .more:hover{background:var(--soft)}
-.tag{display:inline-block;font:700 12px/1.6 "Noto Sans KR",sans-serif;padding:0 8px;border-radius:999px;background:var(--hot);color:#fff;vertical-align:8px;margin-left:10px}
+.tag{display:inline-block;font:700 12px/1.6 "Noto Sans KR",sans-serif;padding:0 8px;border-radius:999px;background:var(--hot);color:var(--onhot);vertical-align:8px;margin-left:10px}
 .rows{display:grid;gap:2px}
 .row{display:grid;grid-template-columns:28px 52px minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:6px 6px 6px 4px;border-radius:12px;cursor:pointer}
 .row:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
@@ -157,6 +182,55 @@ select{height:46px;border-radius:12px;border:1px solid var(--line);background:va
 .pt:hover .alw::before{transform:translateX(9%)}
 .als{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
 .strip.als{grid-auto-columns:170px}
+.door{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.dr{position:relative;overflow:hidden;border-radius:20px;min-height:132px;padding:18px 20px;color:#fff;text-align:left;display:grid;align-content:space-between;gap:10px}
+.dr b{font-family:"Do Hyeon","Noto Sans KR",sans-serif;font-weight:400;font-size:clamp(24px,2.6vw,32px);line-height:1.05;position:relative;z-index:1}
+.dr span{font-size:14px;color:inherit;opacity:.85;position:relative;z-index:1}
+.dr .i{position:absolute;right:-14px;bottom:-18px;width:112px;height:112px;opacity:.22;stroke-width:1.6}
+.dr:hover{filter:brightness(1.06)}
+.dr.d1{background:var(--deck)}
+.dr.d2{background:var(--hot);color:var(--onhot)}
+.dr.d3{background:var(--ink);color:var(--bg)}
+.hs{display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--side);color:var(--mute);margin-top:14px}
+.hs input{border:0;outline:0;background:none;width:100%;font-size:16px;color:var(--ink)}
+.hs:focus-within{border-color:var(--pri);background:var(--bg)}
+@media(max-width:520px){.door{grid-template-columns:1fr}.dr{min-height:92px;grid-auto-flow:column;align-items:center}}
+.card.chosen .sl::after{content:"";position:absolute;inset:0;z-index:2;border-radius:6px;box-shadow:inset 0 0 0 4px var(--pri);background:color-mix(in srgb,var(--pri) 22%,transparent)}
+.sn{position:absolute;right:8px;top:8px;z-index:3;width:32px;height:32px;border-radius:50%;border:2px solid #fff;background:#00000059;color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;box-shadow:0 2px 8px #0007}
+.card.chosen .sn{background:var(--pri);color:var(--onpri);border-color:var(--pri)}
+.grid.editing .pp,.grid.editing .more{display:none}
+.grid.editing .card:hover .sl{transform:none}
+#selbar{position:sticky;bottom:14px;z-index:15;margin:0 clamp(16px,3vw,36px) 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 10px 10px 18px;border-radius:18px;background:var(--ink);color:var(--bg);box-shadow:0 18px 36px -14px #000b}
+#selbar[hidden]{display:none}
+#selbar .cnt{flex:1 1 160px;font-weight:700}
+#selbar .cnt small{font-weight:400;opacity:.75;margin-left:6px;font-size:14px}
+#selbar .btn.g{background:color-mix(in srgb,var(--bg) 16%,transparent);color:var(--bg)}
+#selbar .ib{color:var(--bg)}
+.btn.on{background:var(--pri);color:var(--onpri)}
+.hist{display:grid;gap:10px}
+.hist.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.hi{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px;border-radius:16px;background:var(--side);border:1px solid var(--line);cursor:pointer}
+.hi:hover{border-color:var(--pri)}
+.hi.on{border-color:var(--pri);background:var(--soft)}
+.hc4{width:72px;height:72px;border-radius:10px;overflow:hidden}
+.hi b{display:block;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi .sub,.hi .tl{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi .ha{display:flex;color:var(--mute)}
+@media(max-width:760px){#selbar{bottom:92px}}
+.qr,.rows[data-sort] .row{position:relative;isolation:isolate;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.qr{--rowbg:var(--deck)}
+.qr.now{--rowbg:color-mix(in srgb,#fff 18%,var(--deck))}
+.rows .row{--rowbg:var(--bg)}
+.rows .row.on{--rowbg:var(--soft)}
+.rows[data-sort] .hd{width:40px;color:var(--mute)}
+.lift{box-shadow:0 14px 28px -10px #000c;z-index:3;cursor:grabbing;transform:scale(1.015)}
+.rows .row.lift{background:var(--side)}
+.swiping{background:var(--danger)!important;overflow:hidden}
+.swiping::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:var(--rowbg);transform:translateX(var(--sx,0px))}
+.swiping::after{content:"빼기";position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:0;color:#fff;font-weight:700;font-size:14px}
+.swiping>*{position:relative;z-index:2;transform:translateX(var(--sx,0px))}
+.swiping.snap::before,.swiping.snap>*{transition:transform .2s ease}
+@media(prefers-reduced-motion:reduce){.swiping.snap::before,.swiping.snap>*{transition:none}}
 .col2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px 32px}
 .col2 h2{font-size:24px}
 #deck{background:var(--deck);color:#fff;position:relative;display:flex;flex-direction:column;overflow:hidden}
@@ -183,7 +257,7 @@ select{height:46px;border-radius:12px;border:1px solid var(--line);background:va
 #deck.drag{position:fixed;top:0;right:0;bottom:0;z-index:36;display:flex!important;overflow:hidden;box-shadow:-24px 0 48px -20px #000a}
 body.dragging{cursor:ew-resize;user-select:none;-webkit-user-select:none}
 @media(min-width:761px){
-#app.d-off{grid-template-columns:236px minmax(0,1fr) 0}
+#app.d-off{grid-template-columns:minmax(0,1fr) 0}
 #app.d-off #deck:not(.drag){display:none}
 body.d-off #mini,body.d-off #pull{display:flex}
 body.d-off #pull{display:grid}
@@ -233,7 +307,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 .ctl .ib{width:52px;height:52px;border-radius:50%}
 .ctl .ib.on{background:#fff;color:var(--deck)}
 #br small{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700}
-.big{width:78px;height:78px;border-radius:50%;background:var(--hot);color:#fff;display:grid;place-items:center;box-shadow:0 12px 22px -8px #0009}
+.big{width:78px;height:78px;border-radius:50%;background:var(--hot);color:var(--onhot);display:grid;place-items:center;box-shadow:0 12px 22px -8px #0009}
 .big .i{width:34px;height:34px}
 .vol{display:flex;align-items:center;gap:12px;color:#ffffffcc}
 .upn{border-top:1px solid #ffffff30;padding-top:14px;display:grid;gap:2px}
@@ -296,6 +370,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 #drop.show{display:grid}
 #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:.25s;z-index:70;max-width:calc(100% - 32px);text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.act{pointer-events:auto;display:flex;align-items:center;gap:14px;padding:8px 8px 8px 20px}
+#toast button{min-height:36px;padding:0 14px;border-radius:999px;background:var(--hot);color:var(--onhot);font-weight:700;font-size:14px}
 @media(max-width:1100px){#sync2{display:flex}#app{grid-template-columns:minmax(0,1fr) var(--dw,330px)}#app.d-off{grid-template-columns:minmax(0,1fr) 0}#side{display:none}#chips{display:flex}}
 @media(max-width:760px){
 #app{grid-template-columns:minmax(0,1fr)}
@@ -328,6 +404,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
     <div id="sync2"></div>
     <div id="head" class="head"></div>
     <div id="list"></div>
+    <div id="selbar" hidden></div>
   </main>
   <section id="deck" aria-label="지금 재생 중">
     <span class="grip" id="grip" title="끌어서 크기 조절" aria-hidden="true"></span>
@@ -371,11 +448,22 @@ const fmt=t=>{if(!isFinite(t)||t<0)t=0;t=Math.round(t);return Math.floor(t/60)+'
 const fmtSum=s=>{const m=Math.round(s/60);if(s>0&&m<1)return '1분 미만';return m<60?m+'분':Math.floor(m/60)+'시간 '+(m%60)+'분'};
 const bytes=b=>b>1e9?(b/1e9).toFixed(1)+'GB':Math.max(1,Math.round(b/1e6))+'MB';
 const hash=s=>{let h=7;for(const c of String(s))h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)};
-const P={play:['f','<path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/>'],pause:['f','<rect x="6" y="5" width="4.2" height="14" rx="1.3"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.3"/>'],next:['f','<path d="M5 6.2v11.6a1 1 0 0 0 1.5.85L15 13.2V18h2.2V6H15v4.8L6.5 5.35A1 1 0 0 0 5 6.2z"/>'],prev:['f','<path d="M19 6.2v11.6a1 1 0 0 1-1.5.85L9 13.2V18H6.8V6H9v4.8l8.5-5.45A1 1 0 0 1 19 6.2z"/>'],more:['f','<circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/>'],shuffle:['s','<path d="M3 7h3.5c2 0 3.3 1 4.4 2.6l2.2 3.2c1.1 1.6 2.4 2.6 4.4 2.6H21M3 17h3.5c1.5 0 2.6-.5 3.5-1.5M14 8.6c.9-1 2-1.6 3.5-1.6H21M18 4l3 3-3 3M18 13.4l3 3-3 3"/>'],repeat:['s','<path d="M4 11V9a3 3 0 0 1 3-3h12M16 3l3 3-3 3M20 13v2a3 3 0 0 1-3 3H5M8 21l-3-3 3-3"/>'],plus:['s','<path d="M12 5v14M5 12h14"/>'],up:['s','<path d="M6 15l6-6 6 6"/>'],down:['s','<path d="M6 9l6 6 6-6"/>'],search:['s','<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>'],close:['s','<path d="M6 6l12 12M18 6L6 18"/>'],import:['s','<path d="M12 4v11M7 10l5 5 5-5M5 19.5h14"/>'],vol:['s','<path d="M4 9.5h3l5-4v13l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/>'],crate:['s','<path d="M3 8l9-4 9 4v9l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v9"/>'],home:['s','<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>'],edit:['s','<path d="M4 20h4L19 9l-4-4L4 16z"/>'],trash:['s','<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'],check:['s','<path d="M5 12.5l4.5 4.5L19 7"/>'],image:['s','<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>'],film:['s','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4-2.5z"/>'],hide:['s','<path d="M6 6l6 6-6 6M13 6l6 6-6 6"/>'],panel:['s','<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 4v16"/>'],grip:['s','<path d="M5 9h14M5 15h14"/>'],cloud:['s','<path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.1 4.5 4.5 0 0 0 7 18z"/>'],album:['s','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>'],expand:['s','<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>']};
+const P={play:['f','<path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/>'],pause:['f','<rect x="6" y="5" width="4.2" height="14" rx="1.3"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.3"/>'],next:['f','<path d="M5 6.2v11.6a1 1 0 0 0 1.5.85L15 13.2V18h2.2V6H15v4.8L6.5 5.35A1 1 0 0 0 5 6.2z"/>'],prev:['f','<path d="M19 6.2v11.6a1 1 0 0 1-1.5.85L9 13.2V18H6.8V6H9v4.8l8.5-5.45A1 1 0 0 1 19 6.2z"/>'],more:['f','<circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/>'],shuffle:['s','<path d="M3 7h3.5c2 0 3.3 1 4.4 2.6l2.2 3.2c1.1 1.6 2.4 2.6 4.4 2.6H21M3 17h3.5c1.5 0 2.6-.5 3.5-1.5M14 8.6c.9-1 2-1.6 3.5-1.6H21M18 4l3 3-3 3M18 13.4l3 3-3 3"/>'],repeat:['s','<path d="M4 11V9a3 3 0 0 1 3-3h12M16 3l3 3-3 3M20 13v2a3 3 0 0 1-3 3H5M8 21l-3-3 3-3"/>'],plus:['s','<path d="M12 5v14M5 12h14"/>'],up:['s','<path d="M6 15l6-6 6 6"/>'],down:['s','<path d="M6 9l6 6 6-6"/>'],search:['s','<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>'],close:['s','<path d="M6 6l12 12M18 6L6 18"/>'],import:['s','<path d="M12 4v11M7 10l5 5 5-5M5 19.5h14"/>'],vol:['s','<path d="M4 9.5h3l5-4v13l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/>'],crate:['s','<path d="M3 8l9-4 9 4v9l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v9"/>'],home:['s','<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>'],edit:['s','<path d="M4 20h4L19 9l-4-4L4 16z"/>'],trash:['s','<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'],check:['s','<path d="M5 12.5l4.5 4.5L19 7"/>'],image:['s','<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>'],film:['s','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4-2.5z"/>'],hide:['s','<path d="M6 6l6 6-6 6M13 6l6 6-6 6"/>'],panel:['s','<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 4v16"/>'],grip:['s','<path d="M5 9h14M5 15h14"/>'],cloud:['s','<path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.1 4.5 4.5 0 0 0 7 18z"/>'],album:['s','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>'],list:['s','<path d="M4 6h16M4 12h10M4 18h7M17 14v6l4-3z"/>'],palette:['s','<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2s-.8-1.5-.8-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/>'],clock:['s','<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'],expand:['s','<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>']};
 const ic=n=>`<svg class="i ${P[n][0]}" viewBox="0 0 24 24" aria-hidden="true">${P[n][1]}</svg>`;
+const MODES=[{k:'normal',n:'평소',d:'하양 바탕에 코발트 턴테이블',c:['#ffffff','#2340d9','#ff5a3c','#151722','#2340d9']},
+{k:'vocalo',n:'보카로',d:'어두운 무대에 청록과 핫핑크 네온',c:['#0b0f1f','#0a3843','#ff4fa3','#e6fbff','#39c5bb']},
+{k:'study',n:'시험공부',d:'눈이 편한 차분한 초록, 느리게 도는 레코드',c:['#f3f4ef','#26453b','#e3a63b','#1e2925','#2f6b57']},
+{k:'night',n:'밤',d:'불 끄고 듣는 짙은 남색',c:['#0a0b11','#121838','#ff8a5c','#eceef6','#8a9bff']},
+{k:'pastel',n:'파스텔',d:'연분홍 바탕에 라벤더',c:['#fff8fb','#7456bf','#ff7fa6','#2b2234','#7d58c8']}];
+const curMode=()=>{try{return localStorage.getItem('plli-mode')||'normal'}catch(e){return 'normal'}};
+function applyDesign(k){const el=document.documentElement;if(k&&k!=='normal')el.dataset.mode=k;else delete el.dataset.mode}
+applyDesign(curMode());
+function pickMode(){const cur=curMode();
+modal('디자인 모드',`<div class="modes">${MODES.map(m=>`<button type="button" class="mo ${m.k===cur?'on':''}" data-mk="${m.k}"><span class="pv"><i style="background:${m.c[0]};--k:${m.c[3]};--a:${m.c[4]}"></i><i style="background:${m.c[1]};--h:${m.c[2]}"></i></span><b>${m.n}</b><span>${m.d}</span></button>`).join('')}</div><p class="note">고르는 즉시 바뀌어요. 이 기기에 기억돼요.</p>`,'완료',()=>{},false,e=>{
+const b=e.target.closest('[data-mk]');if(!b)return false;try{localStorage.setItem('plli-mode',b.dataset.mk)}catch(err){}applyDesign(b.dataset.mk);document.querySelectorAll('#ov .mo').forEach(x=>x.classList.toggle('on',x===b));renderSide();return true})}
 const HUES=[8,28,48,95,150,175,200,222,262,300,330];
 
-const S={tracks:[],playlists:[],view:'home',q:'',sort:'added',kind:'all',queue:[],qi:-1,ctx:[],ctxName:'음악 창고',shuffle:false,repeat:'off',persist:true,loaded:null,stats:{}};
+const S={tracks:[],playlists:[],view:'home',q:'',sort:'added',kind:'all',queue:[],qi:-1,ctx:[],ctxName:'파일 창고',shuffle:false,repeat:'off',persist:true,loaded:null,stats:{}};
 const DEMO_PL={id:'demo-pl',name:'밤 산책용',memo:'예시로 만든 플리예요.',ids:['demo-2','demo-1','demo-3'],demo:true,hue:222};
 const audio=$('#media');
 const urls=new Map(),homeLists={};
@@ -383,7 +471,7 @@ let db=null,curUrl=null,seeking=false,tt=0,counted=null;
 const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'')??d}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const prefs=ls('plli-prefs',{});
-S.asort='added';S.shuffle=!!prefs.shuffle;S.repeat=prefs.repeat||'off';S.sort=prefs.sort||'added';S.stats=ls('plli-stats',{});
+S.asort='added';S.editing=false;S.sel=[];{const h=ls('plli-hist',{});S.hist=Array.isArray(h.items)?h.items:[];S.histGone=Array.isArray(h.gone)?h.gone:[]}S.shuffle=!!prefs.shuffle;S.repeat=prefs.repeat||'off';S.sort=prefs.sort||'added';S.stats=ls('plli-stats',{});
 const savePrefs=()=>lsSet('plli-prefs',{shuffle:S.shuffle,repeat:S.repeat,sort:S.sort,vol:audio.volume,last:prefs.last,deck:S.deck,dw:S.dw,keep:prefs.keep});
 S.deck=['off','mid','full'].includes(prefs.deck)?prefs.deck:'mid';S.dw=+prefs.dw||0;
 const isPhone=()=>matchMedia('(max-width:760px)').matches;
@@ -454,7 +542,7 @@ if(!p){p={id:d.id,...c,cover:null,synced:true};p._sig=plSig(p);S.playlists.push(
 else if(c.ver>(p.ver||0)){if(c.coverId!==p.coverId){p.cover=null;dropUrls('pl:'+p.id)}Object.assign(p,c);p.synced=true;p._sig=plSig(p);changed=true}
 else if((p.ver||0)>c.ver)enqueue('p'+p.id,()=>pushPl(p));else p.synced=true}
 if(!snap.metadata.fromCache){for(const p of S.playlists.slice()){if(seen.has(p.id))continue;if(p.synced){S.playlists=S.playlists.filter(x=>x!==p);dropUrls('pl:'+p.id);changed=true}else{if(!p.ver)p.ver=Date.now();enqueue('p'+p.id,()=>pushPl(p))}}}
-if(changed){S.playlists.sort((a,b)=>(a.made||0)-(b.made||0));savePlLocal();if(S.view!=='home'&&S.view!=='lib'&&S.view!=='albums'&&!S.view.startsWith('al:')&&!curPl())S.view='home';renderAll()}startDownloads()}
+if(changed){S.playlists.sort((a,b)=>(a.made||0)-(b.made||0));savePlLocal();if(S.view!=='home'&&S.view!=='lib'&&S.view!=='albums'&&S.view!=='pls'&&S.view!=='hist'&&!S.view.startsWith('al:')&&!curPl())S.view='home';renderAll()}startDownloads()}
 async function startDownloads(){if(C.dl||!keepAll()||!C.db||!navigator.onLine)return;C.dl=true;renderSync();
 try{for(;;){if(!keepAll()||!navigator.onLine)break;const t=S.tracks.find(x=>!x.demo&&!x._fail&&((!x.blob&&x.chunks?.length)||(x.artId&&!x.art)||(x.coverId&&!x.cover)));
 if(t){try{if(!t.blob&&t.chunks?.length)await pullFile(t);if(t.artId&&!t.art)t.art=await fetchBlob(t.artId);if(t.coverId&&!t.cover)t.cover=await fetchBlob(t.coverId);await saveTrack(t);markLocal(t)}catch(e){t._fail=1}continue}
@@ -462,7 +550,7 @@ const p=S.playlists.find(x=>x.coverId&&!x.cover&&!x._fail);if(p){try{p.cover=awa
 finally{C.dl=false;renderSync()}}
 function refreshUsage(){if(!C.as)return;C.as.list().then(r=>{C.usage=r&&r.usage;renderSync()}).catch(()=>{})}
 function syncText(){const need=S.tracks.filter(t=>!t.demo&&!t.blob).length;
-if(C.state==='local')return [S.persist?'오프라인 버전이에요. 인터넷 없이 쓸 수 있고, 곡은 이 기기 안에만 보관돼요.':'이 화면에서는 저장이 막혀 있어 새로고침하면 창고가 비워져요.','off'];
+if(C.state==='local')return [S.persist?'오프라인 버전 7이에요. 인터넷 없이 쓸 수 있고, 곡은 이 기기 안에만 보관돼요.':'이 화면에서는 저장이 막혀 있어 새로고침하면 창고가 비워져요.','off'];
 if(!navigator.onLine)return [`오프라인이에요. 이 기기에 내려받은 것은 그대로 재생돼요${need?` (아직 못 받은 것 ${need}개)`:''}. 연결되면 바뀐 내용을 맞춰요.`,'off'];
 if(C.state==='connecting')return ['클라우드에 연결하는 중…','busy'];
 if(C.state==='error')return ['클라우드 연결이 끊겼어요. 새로고침하면 다시 연결해요.','off'];
@@ -476,7 +564,7 @@ async function connect(){if(!window.claude?.use){renderSync();return}C.state='co
 let d=null,a=null;try{d=await window.claude.use('db')}catch(e){}try{a=await window.claude.use('assets')}catch(e){}
 if(!d){C.state='local';renderSync();return}C.db=d;C.as=a;C.state='online';renderSync();
 const fail=e=>{if(e&&e.code==='unavailable'||e&&e.code==='revoked'){C.state='error';renderSync()}};
-try{d.collection('tracks').onSnapshot(onTracks,fail);d.collection('playlists').onSnapshot(onPls,fail)}catch(e){C.state='error'}refreshUsage()}
+try{d.collection('tracks').onSnapshot(onTracks,fail);d.collection('playlists').onSnapshot(onPls,fail);d.doc('meta/history').onSnapshot(onHist,fail)}catch(e){C.state='error'}refreshUsage()}
 
 function openDB(){return new Promise(res=>{try{const r=indexedDB.open('plli-store',1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('tracks',{keyPath:'id'});d.createObjectStore('kv')};r.onsuccess=()=>res(r.result);r.onerror=()=>res(null);r.onblocked=()=>res(null);setTimeout(()=>res(null),4000)}catch(e){res(null)}})}
 function tx(store,mode,fn){return new Promise((res,rej)=>{try{const t=db.transaction(store,mode);const rq=fn(t.objectStore(store));t.oncomplete=()=>res(rq&&rq.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)}catch(e){rej(e)}})}
@@ -547,27 +635,28 @@ const vbadge=t=>t.kind==='video'?`<span class="vb">${ic('film')}영상</span>`:'
 function libList(){const q=S.q.trim().toLowerCase(),c=new Intl.Collator('ko',{numeric:true});let a=shelf();
 if(S.kind!=='all')a=a.filter(t=>(t.kind||'audio')===S.kind);if(q)a=a.filter(t=>(t.title+' '+t.artist+' '+t.album).toLowerCase().includes(q));
 if(S.sort==='title')a.sort((x,y)=>c.compare(x.title,y.title));else if(S.sort==='artist')a.sort((x,y)=>c.compare(x.artist,y.artist)||c.compare(x.title,y.title));else a.sort((x,y)=>y.added-x.added);return a}
-const viewIds=()=>S.view.startsWith('al:')?(curAl()?.tracks||[]).map(t=>t.id):S.view==='albums'?alList().flatMap(a=>a.tracks.map(t=>t.id)):S.view==='lib'?libList().map(t=>t.id):S.view==='home'?shelf().sort((x,y)=>y.added-x.added).map(t=>t.id):(curPl()?.ids||[]).filter(getT);
-const vname=()=>S.view.startsWith('al:')?(curAl()?.name||'앨범'):S.view==='albums'?'앨범':S.view==='lib'||S.view==='home'?'음악 창고':(curPl()?.name||'');
-function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2400)}
-const card=t=>`<div class="card ${t.id===S.queue[S.qi]?'on':''}" data-id="${esc(t.id)}"><div class="sl">${cover(t)}${vbadge(t)}${cbadge(t)}<button class="pp" data-act="pp" aria-label="재생">${ic(t.id===S.queue[S.qi]&&!audio.paused?'pause':'play')}</button></div><div class="ct"><div><b>${esc(t.title)}</b><span>${esc(t.artist)} · ${fmt(t.duration)}</span></div><button class="more" data-act="more" aria-label="더보기">${ic('more')}</button></div></div>`;
-const row=(t,i,edit,num)=>`<div class="row ${t.id===S.queue[S.qi]?'on':''}" data-id="${esc(t.id)}"><span class="n">${num??(i+1)}</span><div class="th">${cover(t)}</div><div class="ti"><b>${esc(t.title)}</b><span>${!t.blob&&!t.demo?'클라우드 · ':''}${t.kind==='video'?'영상 · ':''}${esc(t.artist)}${t.album?' · '+esc(t.album):''}</span></div><span class="du">${fmt(t.duration)}</span><div class="ra">`+(edit?`<button class="ib" data-act="up" aria-label="위로" ${edit.first?'disabled':''}>${ic('up')}</button><button class="ib" data-act="dn" aria-label="아래로" ${edit.last?'disabled':''}>${ic('down')}</button>`:'')+`<button class="ib" data-act="more" aria-label="더보기">${ic('more')}</button></div></div>`;
+const viewIds=()=>S.view==='hist'?[]:S.view==='pls'?[...new Set(plists().flatMap(p=>p.ids))].filter(getT):S.view.startsWith('al:')?(curAl()?.tracks||[]).map(t=>t.id):S.view==='albums'?alList().flatMap(a=>a.tracks.map(t=>t.id)):S.view==='lib'?libList().map(t=>t.id):S.view==='home'?shelf().sort((x,y)=>y.added-x.added).map(t=>t.id):(curPl()?.ids||[]).filter(getT);
+const vname=()=>S.view==='hist'?'기록':S.view==='pls'?'플레이리스트':S.view.startsWith('al:')?(curAl()?.name||'앨범'):S.view==='albums'?'앨범':S.view==='lib'||S.view==='home'?'파일 창고':(curPl()?.name||'');
+function toast(m,act,fn){const el=$('#toast');el.textContent=m;el.classList.toggle('act',!!act);if(act){const b=document.createElement('button');b.textContent=act;b.onclick=()=>{el.classList.remove('show');fn()};el.append(b)}el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),act?4500:2400)}
+const card=t=>{const ed=S.editing&&S.view==='lib',k=S.sel.indexOf(t.id)+1;return `<div class="card ${t.id===S.queue[S.qi]?'on':''} ${ed&&k?'chosen':''}" data-id="${esc(t.id)}"><div class="sl">${cover(t)}${vbadge(t)}${cbadge(t)}${ed?`<span class="sn">${k||''}</span>`:''}<button class="pp" data-act="pp" aria-label="재생">${ic(t.id===S.queue[S.qi]&&!audio.paused?'pause':'play')}</button></div><div class="ct"><div><b>${esc(t.title)}</b><span>${esc(t.artist)} · ${fmt(t.duration)}</span></div><button class="more" data-act="more" aria-label="더보기">${ic('more')}</button></div></div>`}
+const row=(t,i,edit,num)=>`<div class="row ${t.id===S.queue[S.qi]?'on':''}" data-id="${esc(t.id)}"><span class="n">${num??(i+1)}</span><div class="th">${cover(t)}</div><div class="ti"><b>${esc(t.title)}</b><span>${!t.blob&&!t.demo?'클라우드 · ':''}${t.kind==='video'?'영상 · ':''}${esc(t.artist)}${t.album?' · '+esc(t.album):''}</span></div><span class="du">${fmt(t.duration)}</span><div class="ra">`+(edit?`<span class="hd" data-drag title="끌어서 순서 바꾸기">${ic('grip')}</span>`:'')+`<button class="ib" data-act="more" aria-label="더보기">${ic('more')}</button></div></div>`;
 
 function renderSide(){const L=plists(),n=shelf().length;const sw=p=>`<span class="sw" style="background:hsl(${hueOf(p)} 70% 52%)">${plArt(p)?`<img class="cv" src="${plArt(p)}" alt="">`:''}</span>`;
-$('#nav').innerHTML=`<button class="nav ${S.view==='home'?'on':''}" data-go="home">${ic('home')}<span class="nm">홈</span></button><button class="nav ${S.view==='lib'?'on':''}" data-go="lib">${ic('crate')}<span class="nm">음악 창고</span><span class="c">${n}</span></button><button class="nav ${S.view==='albums'||S.view.startsWith('al:')?'on':''}" data-go="albums">${ic('album')}<span class="nm">앨범</span><span class="c">${albums().length}</span></button><div class="sh"><span>플레이리스트</span><button class="ib" data-act="newpl" aria-label="새 플레이리스트">${ic('plus')}</button></div>`+(L.map(p=>`<button class="nav ${S.view===p.id?'on':''}" data-go="${esc(p.id)}">${sw(p)}<span class="nm">${esc(p.name)}</span><span class="c">${p.ids.filter(getT).length}</span></button>`).join('')||'<p class="note" style="padding:6px 12px">아직 플리가 없어요.</p>');
-$('#chips').innerHTML=`<button class="${S.view==='home'?'on':''}" data-go="home">홈</button><button class="${S.view==='lib'?'on':''}" data-go="lib">음악 창고 ${n}</button><button class="${S.view==='albums'||S.view.startsWith('al:')?'on':''}" data-go="albums">앨범 ${albums().length}</button>`+L.map(p=>`<button class="${S.view===p.id?'on':''}" data-go="${esc(p.id)}">${sw(p)}${esc(p.name)}</button>`).join('')+`<button data-act="newpl">${ic('plus')}새 플리</button><button data-act="import">${ic('import')}들여오기</button>`;
+$('#nav').innerHTML=`<button class="nav ${S.view==='home'?'on':''}" data-go="home">${ic('home')}<span class="nm">홈</span></button><button class="nav ${S.view==='lib'?'on':''}" data-go="lib">${ic('crate')}<span class="nm">파일 창고</span><span class="c">${n}</span></button><button class="nav ${S.view==='albums'||S.view.startsWith('al:')?'on':''}" data-go="albums">${ic('album')}<span class="nm">앨범</span><span class="c">${albums().length}</span></button><div class="sh"><span>플레이리스트</span><button class="ib" data-act="newpl" aria-label="새 플레이리스트">${ic('plus')}</button></div>`+(L.map(p=>`<button class="nav ${S.view===p.id?'on':''}" data-go="${esc(p.id)}">${sw(p)}<span class="nm">${esc(p.name)}</span><span class="c">${p.ids.filter(getT).length}</span></button>`).join('')||'<p class="note" style="padding:6px 12px">아직 플리가 없어요.</p>');
+const inAl=S.view==='albums'||S.view.startsWith('al:'),inPl=S.view==='pls'||!!curPl();
+$('#chips').innerHTML=`<span class="tb disp"><span class="dot"></span>플리 창고</span><button class="${S.view==='home'?'on':''}" data-go="home">${ic('home')}홈</button><button class="${S.view==='lib'?'on':''}" data-go="lib">${ic('crate')}파일 창고 ${n}</button><button class="${inAl?'on':''}" data-go="albums">${ic('album')}앨범 ${albums().length}</button><button class="${inPl?'on':''}" data-go="pls">${ic('list')}플리 ${L.length}</button><button data-act="import">${ic('import')}들여오기</button><button data-act="mode">${ic('palette')}디자인 · ${esc((MODES.find(m=>m.k===curMode())||MODES[0]).n)}</button>`;
 renderSync();const _unused=S.persist?'들여온 곡과 영상은 이 기기의 브라우저 안에 보관돼요. 다른 기기에서는 따로 들여와야 해요.':'이 화면에서는 저장이 막혀 있어 새로고침하면 창고가 비워져요.'}
-function renderHead(){if(S.view==='albums'||S.view.startsWith('al:')){if(S.view!=='albums'&&!curAl())S.view='albums';renderAlbumHead();return}let p=null;if(S.view!=='lib'&&S.view!=='home'){p=curPl();if(!p)S.view='home'}
+function renderHead(){renderSelbar();if(S.view==='hist'){const H=histLive();$('#head').innerHTML=`<div class="ht"><div><h1 class="disp">기록</h1><div class="meta">즉석으로 뽑아 들은 묶음 ${H.length}개</div></div><div class="acts"><button class="btn p" data-go="lib">${ic('edit')}파일 창고에서 새로 뽑기</button></div></div><p class="note">플리로 저장되지는 않아요. 최근 60개까지 남고, 누르면 그 순서 그대로 다시 들어요.</p>`;return}if(S.view==='pls'){const L=plists();$('#head').innerHTML=`<div class="ht"><div><h1 class="disp">플레이리스트</h1><div class="meta">${L.length}개 플리</div></div><div class="acts"><button class="btn p" data-act="newpl">${ic('plus')}새 플리 만들기</button></div></div>`;return}if(S.view==='albums'||S.view.startsWith('al:')){if(S.view!=='albums'&&!curAl())S.view='albums';renderAlbumHead();return}let p=null;if(S.view!=='lib'&&S.view!=='home'){p=curPl();if(!p)S.view='home'}
 if(S.view==='home'){$('#head').innerHTML='';return}
 const ids=viewIds(),tot=ids.reduce((s,id)=>s+(getT(id)?.duration||0),0);let h;
 if(S.view==='lib'){const all=shelf(),nv=all.filter(t=>t.kind==='video').length;
-h=`<div class="ht"><div><h1 class="disp">음악 창고</h1><div class="meta">${all.length-nv}곡 · 영상 ${nv}개 · ${fmtSum(all.reduce((s,t)=>s+t.duration,0))}<span id="usage"></span></div></div><div class="acts"><button class="btn p" data-act="playall">${ic('play')}전체 재생</button><button class="btn g" data-act="shufall">${ic('shuffle')}셔플</button><button class="btn h" data-act="import">${ic('import')}MP3·MP4 들여오기</button></div></div>
+h=`<div class="ht"><div><h1 class="disp">파일 창고</h1><div class="meta">${all.length-nv}곡 · 영상 ${nv}개 · ${fmtSum(all.reduce((s,t)=>s+t.duration,0))}<span id="usage"></span></div></div><div class="acts"><button class="btn p" data-act="playall">${ic('play')}전체 재생</button><button class="btn g" data-act="shufall">${ic('shuffle')}셔플</button><button class="btn g ${S.editing?'on':''}" data-act="edit">${ic('edit')}${S.editing?'편집 중':'편집'}</button><button class="btn g" data-go="hist">${ic('clock')}기록</button><button class="btn h" data-act="import">${ic('import')}MP3·MP4 들여오기</button></div></div>
 <div class="tools"><div class="seg" role="group" aria-label="종류">${[['all','전체'],['audio','음악'],['video','영상']].map(([k,l])=>`<button class="${S.kind===k?'on':''}" data-act="kind" data-k="${k}">${l}</button>`).join('')}</div><label class="srch">${ic('search')}<input id="q" type="search" placeholder="제목, 아티스트, 앨범 검색" value="${esc(S.q)}" autocomplete="off"></label><select id="sort" aria-label="정렬"><option value="added">최근 들여온 순</option><option value="title">제목순</option><option value="artist">아티스트순</option></select></div>`+(noReal()?'<p class="note">지금 보이는 3곡은 이 앱이 직접 합성한 예시 곡이에요. MP3나 MP4를 들여오면 예시는 사라지고 내 것만 남아요. 파일을 화면에 끌어다 놓아도 돼요.</p>':'')}
 else h=`<div class="ph"><div class="pc">${plCover(p)}</div><div><h1 class="disp">${esc(p.name)}${p.demo?'<span class="tag">예시</span>':''}</h1>${p.memo?`<p class="memo">${esc(p.memo)}</p>`:''}<div class="meta">${ids.length}곡 · ${fmtSum(tot)}</div><div class="acts"><button class="btn p" data-act="playall" ${ids.length?'':'disabled'}>${ic('play')}재생</button><button class="btn g" data-act="shufall" ${ids.length?'':'disabled'}>${ic('shuffle')}셔플</button>`+(p.demo?'':`<button class="btn g" data-act="addto">${ic('plus')}곡 추가</button><button class="btn g" data-act="editpl">${ic('edit')}꾸미기</button><button class="ib" data-act="delpl" aria-label="플리 삭제">${ic('trash')}</button>`)+'</div></div></div>';
 $('#head').innerHTML=h;if(S.view==='lib'){$('#sort').value=S.sort;try{navigator.storage?.estimate?.().then(e=>{const el=$('#usage');if(el&&e&&e.usage&&!noReal())el.textContent=' · 이 기기에 '+bytes(e.usage)+' 보관 중'}).catch(()=>{})}catch(e){}}}
 function greet(){const h=new Date().getHours();return h<5?'늦은 밤이에요':h<11?'좋은 아침이에요':h<17?'좋은 오후예요':h<22?'좋은 저녁이에요':'늦은 밤이에요'}
 function heroHTML(){const all=shelf(),t=getT(S.queue[S.qi])||all[0];if(!t)return '';const u=artOf(t),playing=!audio.paused&&S.loaded===t.id,nv=all.filter(x=>x.kind==='video').length;
-return `<div class="hero" style="--hc:hsl(${hash(t.title+t.artist)%360} 55% 32%)">${u?`<img class="bg" src="${u}" alt="">`:''}<div class="hc">${cover(t)}</div><div class="hx"><p>${greet()}. ${S.stats[t.id]?'듣던 곡을 이어 들어요.':'오늘은 이 곡부터 어때요?'}</p><h1 class="disp">${esc(t.title)}</h1><p>${esc(t.artist)}${t.album?' · '+esc(t.album):''}</p><div class="acts"><button class="btn h" data-act="toggle">${ic(playing?'pause':'play')}${playing?'일시정지':'이어 듣기'}</button><button class="btn g" data-act="shufhome">${ic('shuffle')}창고 전체 셔플</button></div><div class="stats"><span><b>${all.length-nv}</b>곡</span><span><b>${nv}</b>영상</span><span><b>${albums().length}</b>앨범</span><span><b>${plists().length}</b>플리</span><span><b>${fmtSum(all.reduce((s,x)=>s+x.duration,0))}</b>분량</span></div></div></div>`}
+return `<div class="hero" style="--hc:hsl(${hash(t.title+t.artist)%360} 55% 32%)">${u?`<img class="bg" src="${u}" alt="">`:''}<div class="hc">${cover(t)}</div><div class="hx"><h1 class="disp">${esc(t.title)}</h1><p>${esc(t.artist)}${t.album?' · '+esc(t.album):''}</p><div class="acts"><button class="btn h" data-act="toggle">${ic(playing?'pause':'play')}${playing?'일시정지':'이어 듣기'}</button><button class="btn g" data-act="shufhome">${ic('shuffle')}창고 전체 셔플</button></div><div class="stats"><span><b>${all.length-nv}</b>곡</span><span><b>${nv}</b>영상</span><span><b>${fmtSum(all.reduce((s,x)=>s+x.duration,0))}</b>분량</span></div></div></div>`}
 function renderHome(){const all=shelf(),L=plists(),st=Object.entries(S.stats).filter(([id])=>getT(id));
 homeLists.added=all.slice().sort((x,y)=>y.added-x.added).slice(0,14).map(t=>t.id);
 homeLists.recent=st.slice().sort((a,b)=>b[1].last-a[1].last).slice(0,5).map(x=>x[0]);
@@ -575,17 +664,20 @@ homeLists.top=st.filter(x=>x[1].n>0).sort((a,b)=>b[1].n-a[1].n||b[1].last-a[1].l
 homeLists.video=all.filter(t=>t.kind==='video').sort((x,y)=>y.added-x.added).slice(0,14).map(t=>t.id);
 const list=(k,empty)=>homeLists[k].length?`<div class="rows" data-list="${k}">${homeLists[k].map((id,i)=>row(getT(id),i)).join('')}</div>`:`<p class="note">${empty}</p>`;
 $('#list').innerHTML=`<div id="hero">${heroHTML()}</div>
-<section class="sec"><h2 class="disp">내 플리<button data-act="newpl">새 플리 만들기</button></h2><div class="pls">${L.map(p=>`<button class="pt" data-go="${esc(p.id)}"><div class="pc">${plCover(p)}</div><b>${esc(p.name)}</b><span>${p.ids.filter(getT).length}곡</span></button>`).join('')}<button class="pt" data-act="newpl"><div class="pc nw">${ic('plus')}</div><b>새 플리</b><span>표지와 이름을 정해요</span></button></div></section>
+<div class="door"><button class="dr d1" data-go="lib">${ic('crate')}<b>파일 창고</b><span>${all.length}개 · ${fmtSum(all.reduce((a,x)=>a+x.duration,0))}</span></button><button class="dr d2" data-go="albums">${ic('album')}<b>앨범</b><span>${albums().length}개</span></button><button class="dr d3" data-go="pls">${ic('list')}<b>플리</b><span>${L.length}개</span></button></div>
+<label class="hs">${ic('search')}<input id="hq" type="search" enterkeyhint="search" placeholder="파일 창고에서 제목, 아티스트, 앨범 찾기" autocomplete="off"></label>
+<section class="sec"><h2 class="disp">플리<button data-go="pls">플리 전체 보기</button></h2><div class="pls">${L.slice(0,7).map(plTile).join('')}${newTile}</div></section>
+${histLive().length?`<section class="sec"><h2 class="disp">기록<button data-go="hist">기록 전체 보기</button></h2><div class="hist two">${histLive().slice(0,4).map(histItem).join('')}</div></section>`:''}
 ${(()=>{const A=albums().sort((x,y)=>y.added-x.added);return A.length?`<section class="sec"><h2 class="disp">앨범<button data-go="albums">앨범 전체 보기</button></h2><div class="strip als">${A.slice(0,12).map(alTile).join('')}</div></section>`:''})()}
-<section class="sec"><h2 class="disp">최근 들여온 것<button data-go="lib">창고 전체 보기</button></h2>${homeLists.added.length?`<div class="strip" data-list="added">${homeLists.added.map(id=>card(getT(id))).join('')}</div>`:'<p class="note">아직 들여온 파일이 없어요.</p>'}</section>
+<section class="sec"><h2 class="disp">파일 창고<button data-go="lib">전체 보기 · 검색</button></h2>${homeLists.added.length?`<div class="strip" data-list="added">${homeLists.added.map(id=>card(getT(id))).join('')}</div>`:'<p class="note">아직 들여온 파일이 없어요.</p>'}</section>
 ${homeLists.video.length?`<section class="sec"><h2 class="disp">영상</h2><div class="strip" data-list="video">${homeLists.video.map(id=>card(getT(id))).join('')}</div></section>`:''}
 <div class="col2"><section class="sec"><h2 class="disp">최근 들은 곡</h2>${list('recent','곡을 재생하면 여기에 쌓여요.')}</section><section class="sec"><h2 class="disp">자주 들은 곡</h2>${list('top','많이 들은 곡이 순서대로 모여요.')}</section></div>`}
-function renderList(){if(S.view==='home'){renderHome();return}if(S.view==='albums'||S.view.startsWith('al:')){renderAlbumList();return}const el=$('#list');
+function renderList(){if(S.view==='home'){renderHome();return}if(S.view==='hist'){const H=histLive();$('#list').innerHTML=H.length?`<div class="hist">${H.map(histItem).join('')}</div>`:`<div class="empty"><b class="disp" style="font-size:28px;color:var(--ink)">아직 기록이 없어요</b><span>파일 창고에서 '편집'을 누르고 곡을 차례로 고른 뒤 '바로 듣기'를 누르면 여기에 남아요.</span><button class="btn p" data-go="lib">파일 창고로 가기</button></div>`;return}if(S.view==='pls'){$('#list').innerHTML=`<div class="pls">${plists().map(plTile).join('')}${newTile}</div>`;return}if(S.view==='albums'||S.view.startsWith('al:')){renderAlbumList();return}const el=$('#list');
 if(S.view==='lib'){const a=libList();if(!a.length){el.innerHTML=S.q?`<div class="empty">'${esc(S.q)}'에 맞는 항목이 없어요.</div>`:S.kind!=='all'?`<div class="empty">${S.kind==='video'?'아직 들여온 영상이 없어요. MP4를 들여오면 여기에 모여요.':'음악 파일이 없어요.'}</div>`:`<div class="empty"><b class="disp" style="font-size:28px;color:var(--ink)">창고가 비어 있어요</b><span>내려받은 MP3와 MP4를 들여오면 여기에 레코드처럼 꽂혀요.</span><button class="btn h" data-act="import">${ic('import')}들여오기</button></div>`;return}
-el.innerHTML='<div class="grid">'+a.map(card).join('')+'</div>';return}
+el.innerHTML=`<div class="grid ${S.editing?'editing':''}">`+a.map(card).join('')+'</div>';return}
 const p=curPl(),ids=p.ids.filter(getT);
 if(!ids.length){el.innerHTML=`<div class="empty"><b class="disp" style="font-size:28px;color:var(--ink)">빈 플리예요</b><span>창고에서 곡을 골라 담아 보세요.</span><button class="btn p" data-act="addto">${ic('plus')}곡 추가</button></div>`;return}
-el.innerHTML='<div class="rows">'+ids.map((id,i)=>row(getT(id),i,p.demo?null:{first:!i,last:i===ids.length-1})).join('')+'</div>'}
+el.innerHTML=`<div class="rows" ${p.demo?'':'data-sort="pl"'}>`+ids.map((id,i)=>row(getT(id),i,p.demo?null:{first:!i,last:i===ids.length-1})).join('')+'</div>'}
 function syncOn(){const cur=S.queue[S.qi];document.querySelectorAll('#list [data-id]').forEach(el=>{const on=el.dataset.id===cur;el.classList.toggle('on',on);const b=el.querySelector('.pp');if(b)b.innerHTML=ic(on&&!audio.paused?'pause':'play')});const h=$('#hero');if(h&&S.view==='home')h.innerHTML=heroHTML()}
 function renderDeck(){const t=getT(S.queue[S.qi]),playing=!audio.paused&&!!t;$('#deck').classList.toggle('playing',playing);$('#plate').classList.toggle('vid',!!t&&t.kind==='video');
 $('#dlab').innerHTML=t?cover(t):'<div class="gen" style="--c1:#1d1f2a;--c2:#2d3040"></div>';
@@ -602,16 +694,6 @@ function renderQueue(){if(qdrag){qDirty=true;return}const el=$('#upn'),t=getT(S.
 const items=S.queue.map((id,i)=>[i,getT(id)]).filter(x=>x[1]),up=items.filter(([i])=>i>S.qi);
 el.innerHTML=`<div class="qh"><div><h3>재생 목록</h3><small>${up.length?`다음 ${up.length}곡 · ${fmtSum(up.reduce((a,[,u])=>a+u.duration,0))}`:(S.repeat==='all'?'끝나면 처음부터 다시 돌아요':'이 곡이 마지막이에요')}</small></div><div class="qa"><button class="qb" data-act="qshuf" ${up.length>1?'':'disabled'}>섞기</button><button class="qb" data-act="qsave">플리로 저장</button><button class="qb" data-act="qclear" ${up.length?'':'disabled'}>다음 곡 비우기</button></div></div>
 <div class="ql" id="ql">${items.map(([i,u])=>`<div class="qr ${i<S.qi?'past':''} ${i===S.qi?'now':''}" data-qi="${i}"><span class="hd" data-drag title="끌어서 순서 바꾸기">${ic('grip')}</span><div class="th">${cover(u)}</div><span class="ti"><b>${esc(u.title)}</b><span>${u.kind==='video'?'영상 · ':''}${esc(u.artist)}</span></span><span class="du">${fmt(u.duration)}</span>${i===S.qi?'<span class="now-t">재생 중</span>':`<button class="qx" data-act="qrm" aria-label="재생 목록에서 빼기">${ic('close')}</button>`}</div>`).join('')}</div>`}
-document.addEventListener('pointerdown',e=>{const h=e.target.closest('[data-drag]');if(!h||qdrag)return;const row=h.closest('.qr');if(!row)return;e.preventDefault();
-qdrag={row,list:row.parentElement,moved:false};row.classList.add('lift');
-const sc=$('#dscroll');let auto=0,lastY=e.clientY;
-const place=()=>{const list=qdrag.list;let before=null;for(const x of list.children){if(x===row)continue;const b=x.getBoundingClientRect();if(lastY<b.top+b.height/2){before=x;break}}if(before!==row.nextElementSibling){list.insertBefore(row,before);qdrag.moved=true}};
-const tick=()=>{const r=sc.getBoundingClientRect();const d=lastY<r.top+70?-12:lastY>r.bottom-70?12:0;if(d){sc.scrollTop+=d;place()}auto=requestAnimationFrame(tick)};auto=requestAnimationFrame(tick);
-const mv=ev=>{lastY=ev.clientY;place()};
-const up=()=>{cancelAnimationFrame(auto);removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);row.classList.remove('lift');
-const order=[...qdrag.list.children].map(x=>+x.dataset.qi),moved=qdrag.moved;qdrag=null;noClick=true;setTimeout(()=>noClick=false,60);
-if(moved){const old=S.queue;S.qi=order.indexOf(S.qi);S.queue=order.map(i=>old[i]);S.ctx=S.queue.slice();toast('순서를 바꿨어요')}qDirty=false;renderDeck()};
-addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)});
 function updTime(){const d=audio.duration||getT(S.queue[S.qi])?.duration||0,c=audio.currentTime||0,p=d?c/d*100:0,sk=$('#seek');
 if(!seeking){$('#tc').textContent=fmt(c);sk.value=d?Math.round(c/d*1000):0;sk.style.setProperty('--p',p+'%')}$('#td').textContent=fmt(d);$('#mbar').style.width=p+'%'}
 function renderAll(){renderSide();renderHead();renderList();renderDeck()}
@@ -625,7 +707,7 @@ else{audio.pause();renderDeck();syncOn();if(!navigator.onLine||!t.chunks?.length
 pullFile(t).then(()=>{if(S.queue[S.qi]===t.id){S.loaded=null;load(auto)}markLocal(t)}).catch(()=>toast('내려받지 못했어요. 인터넷 연결을 확인해 주세요'));return}
 audio.src=src;S.loaded=t.id;counted=null;meta(t)}
 if(auto){const pr=audio.play();if(pr)pr.catch(()=>renderDeck());if(t.kind==='video'&&matchMedia('(max-width:760px)').matches)$('#deck').classList.add('open')}renderDeck();syncOn()}
-function resetQueue(first){const ids=libList().map(t=>t.id);S.ctx=ids;S.ctxName='음악 창고';setQueue(ids,ids.includes(first)?first:ids[0]);S.loaded=null;load(false)}
+function resetQueue(first){const ids=libList().map(t=>t.id);S.ctx=ids;S.ctxName='파일 창고';setQueue(ids,ids.includes(first)?first:ids[0]);S.loaded=null;load(false)}
 function toggle(){if(!getT(S.queue[S.qi]))resetQueue();if(!getT(S.queue[S.qi]))return;if(S.loaded!==S.queue[S.qi]){load(true);return}if(audio.paused){const pr=audio.play();if(pr)pr.catch(()=>{})}else audio.pause()}
 function next(auto){if(S.qi+1<S.queue.length){S.qi++;load(true)}else if(S.repeat==='all'&&S.queue.length){if(S.shuffle)S.queue=shuffled(S.queue);S.qi=0;load(true)}else if(auto){audio.pause();audio.currentTime=0;renderDeck();syncOn()}else toast('마지막 곡이에요')}
 function prev(){if(audio.currentTime>3||S.qi<=0){audio.currentTime=0;return}S.qi--;load(true)}
@@ -697,6 +779,8 @@ function alList(){const q=S.q.trim().toLowerCase(),c=new Intl.Collator('ko',{num
 return A.sort(S.asort==='name'?(x,y)=>c.compare(x.name,y.name):S.asort==='artist'?(x,y)=>c.compare(x.artist,y.artist)||c.compare(x.name,y.name):(x,y)=>y.added-x.added)}
 const curAl=()=>S.view.startsWith('al:')?albums().find(a=>a.key===S.view.slice(3))||null:null;
 const alCover=a=>{const u=artOf(a.cov);return u?`<img class="cv" src="${u}" alt="">`:gen(a.name,a.name)};
+const plTile=p=>`<button class="pt" data-go="${esc(p.id)}"><div class="pc">${plCover(p)}</div><b>${esc(p.name)}</b><span>${p.ids.filter(getT).length}곡</span></button>`;
+const newTile=`<button class="pt" data-act="newpl"><div class="pc nw">${ic('plus')}</div><b>새 플리</b><span>표지와 이름을 정해요</span></button>`;
 const alTile=a=>`<button class="pt" data-go="al:${esc(a.key)}"><div class="alw"><div class="pc">${alCover(a)}</div></div><b>${esc(a.name)}</b><span>${esc(a.artist)} · ${a.tracks.length}곡</span></button>`;
 function renderAlbumHead(){const al=curAl();let h;
 if(!al){const A=albums();h=`<div class="ht"><div><h1 class="disp">앨범</h1><div class="meta">${A.length}개 앨범 · ${A.reduce((s,a)=>s+a.tracks.length,0)}곡</div></div><div class="acts"><button class="btn p" data-act="playall" ${A.length?'':'disabled'}>${ic('play')}전체 재생</button><button class="btn h" data-act="import" data-mode="album">${ic('import')}앨범 들여오기</button></div></div>
@@ -718,9 +802,67 @@ async function applyAlbum(a,nm,cov){let cid=null;if(cov&&C.as&&navigator.onLine)
 for(const t of a.tracks){t.album=nm;if(cov!==undefined){if(t.coverId)old.add(t.coverId);t.cover=cov||null;t.coverId=cov?cid:null;dropUrls(t.id+'|')}t.ver=Date.now();saveTrack(t);enqueue('t'+t.id,()=>pushTrack(t))}
 for(const id of old)dropAsset(id);S.view='al:'+akey(nm);renderAll();toast('앨범을 바꿨어요')}
 
+/* ---- edit mode: pick tracks in order and listen right away; each pick is kept in 기록, not as a playlist ---- */
+function syncSel(){document.querySelectorAll('#list .card').forEach(el=>{const k=S.sel.indexOf(el.dataset.id)+1;el.classList.toggle('chosen',!!k);const n=el.querySelector('.sn');if(n)n.textContent=k||''});renderSelbar()}
+function toggleSel(id){const i=S.sel.indexOf(id);if(i<0)S.sel.push(id);else S.sel.splice(i,1);syncSel()}
+function renderSelbar(){const bar=$('#selbar');if(!bar)return;const on=S.editing&&S.view==='lib';bar.hidden=!on;if(!on){bar.innerHTML='';return}
+const ts=S.sel.map(getT).filter(Boolean),n=ts.length;
+bar.innerHTML=`<div class="cnt">${n?`${n}곡 골랐어요`:'들을 곡을 차례로 눌러 고르세요'}${n?`<small>${fmtSum(ts.reduce((a,t)=>a+(t.duration||0),0))} · 고른 순서대로 재생</small>`:''}</div><button class="btn g" data-act="selall">보이는 곡 모두</button><button class="btn g" data-act="selclear" ${n?'':'disabled'}>비우기</button><button class="btn g" data-act="selshuf" ${n?'':'disabled'}>${ic('shuffle')}섞어서</button><button class="btn h" data-act="selplay" ${n?'':'disabled'}>${ic('play')}바로 듣기</button><button class="ib" data-act="seldone" aria-label="편집 끝내기">${ic('close')}</button>`}
+function playExact(ids,name){ids=ids.filter(getT);if(!ids.length)return;S.ctx=ids.slice();S.ctxName=name;S.queue=ids.slice();S.qi=0;load(true)}
+const DOW='일월화수목금토';
+function histLabel(h){const d=new Date(h.at),hr=d.getHours(),tod=hr<5?'새벽':hr<11?'아침':hr<17?'낮':hr<22?'저녁':'밤';return `${d.getMonth()+1}월 ${d.getDate()}일 (${DOW[d.getDay()]}) ${tod}`}
+const histLive=()=>S.hist.filter(h=>h.ids.some(getT));
+function histItem(h){const ts=h.ids.map(getT).filter(Boolean),t0=ts[0],cur=S.ctxName==='기록'&&S.ctxHid===h.id;
+return `<div class="hi ${cur?'on':''}" data-hid="${esc(h.id)}"><div class="hc4">${ts.length>=4?`<div class="col4">${ts.slice(0,4).map(cover).join('')}</div>`:cover(t0)}</div><div><b>${esc(t0.title)}${ts.length>1?` 외 ${ts.length-1}곡`:''}</b><div class="sub">${histLabel(h)} · ${fmtSum(ts.reduce((a,t)=>a+(t.duration||0),0))}${(h.n||1)>1?` · ${h.n}번 들음`:''}</div><div class="tl">${ts.map(t=>esc(t.title)).join(' · ')}</div></div><div class="ha"><button class="ib" data-act="hplay" aria-label="다시 듣기">${ic('play')}</button><button class="ib" data-act="hdel" aria-label="기록 지우기">${ic('close')}</button></div></div>`}
+function addHist(ids){S.hist.unshift({id:'h'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),at:Date.now(),ids:ids.slice(0,300),n:1});S.hist=S.hist.slice(0,60);saveHist()}
+function histPlay(hid){const h=S.hist.find(x=>x.id===hid);if(!h)return;h.at=Date.now();h.n=(h.n||1)+1;S.hist=[h,...S.hist.filter(x=>x!==h)];saveHist();playExact(h.ids,'기록');S.ctxHid=h.id;if(S.view==='hist'||S.view==='home')renderList()}
+const histSig=a=>(a||[]).map(h=>h.id+':'+h.at+':'+(h.n||1)).join(',');
+const histDoc=()=>({items:S.hist.slice(0,60).map(h=>({id:h.id,at:h.at,ids:h.ids.slice(0,300),n:h.n||1})),gone:S.histGone.slice(-300)});
+function saveHist(){S.histGone=S.histGone.slice(-300);lsSet('plli-hist',{items:S.hist,gone:S.histGone});if(C.db)enqueue('hist',()=>C.db.doc('meta/history').set(histDoc()))}
+function onHist(snap){const m=snap&&snap.exists?snap.data():null,rItems=m&&Array.isArray(m.items)?m.items:[],rGone=m?tids(m.gone):[];
+const gone=new Set([...S.histGone,...rGone]),map=new Map();
+for(const x of [...rItems,...S.hist]){if(!x||typeof x.id!=='string'||!/^h[A-Za-z0-9]{1,40}$/.test(x.id)||gone.has(x.id))continue;const h={id:x.id,at:num(x.at),ids:tids(x.ids),n:Math.max(1,num(x.n))};const ex=map.get(h.id);if(!ex||h.at>ex.at||(h.at===ex.at&&h.n>ex.n))map.set(h.id,h)}
+const merged=[...map.values()].sort((a,b)=>b.at-a.at).slice(0,60),changed=histSig(merged)!==histSig(S.hist);
+S.hist=merged;S.histGone=[...gone].slice(-300);lsSet('plli-hist',{items:S.hist,gone:S.histGone});
+if(!snap.metadata?.fromCache&&(histSig(merged)!==histSig(rItems)||rGone.length!==S.histGone.length))saveHist();
+if(changed&&(S.view==='hist'||S.view==='home')){renderHead();renderList()}}
+
+/* ---- row gestures (재생 목록 and a playlist): drag to reorder (handle, long-press, or mouse drag), swipe left to remove ---- */
+let gest=null;
+const gRow=t=>t.closest('.ql .qr,.rows[data-sort] .row');
+function gScroller(list){return list.closest('#dscroll')||$('#main')}
+function gPlace(){const g=gest;let before=null;for(const x of g.list.children){if(x===g.row)continue;const b=x.getBoundingClientRect();if(g.y<b.top+b.height/2){before=x;break}}if(before!==g.row.nextElementSibling){g.list.insertBefore(g.row,before);g.moved=true}}
+function gDrag(){const g=gest;clearTimeout(g.timer);g.mode='drag';if(g.q)qdrag=true;g.row.classList.add('lift');try{navigator.vibrate&&navigator.vibrate(10)}catch(e){}
+const sc=gScroller(g.list);const tick=()=>{if(!gest||gest.mode!=='drag')return;const r=sc.getBoundingClientRect(),d=g.y<r.top+70?-12:g.y>r.bottom-70?12:0;if(d){sc.scrollTop+=d;gPlace()}g.raf=requestAnimationFrame(tick)};g.raf=requestAnimationFrame(tick)}
+function gOff(){removeEventListener('pointermove',gMove);removeEventListener('pointerup',gEnd);removeEventListener('pointercancel',gEnd)}
+document.addEventListener('pointerdown',e=>{if(gest||(e.button&&e.button>0))return;const row=gRow(e.target);if(!row)return;const onHandle=!!e.target.closest('[data-drag]');
+if(e.target.closest('button')&&!onHandle)return;if(row.classList.contains('lift'))return;
+gest={row,list:row.parentElement,q:!!row.closest('.ql'),x0:e.clientX,y0:e.clientY,y:e.clientY,mode:null,moved:false,mouse:e.pointerType==='mouse',timer:0,raf:0};
+addEventListener('pointermove',gMove);addEventListener('pointerup',gEnd);addEventListener('pointercancel',gEnd);
+if(onHandle){e.preventDefault();gDrag();return}
+if(!gest.mouse)gest.timer=setTimeout(()=>{if(gest&&!gest.mode)gDrag()},380)});
+document.addEventListener('touchmove',e=>{if(gest&&(gest.mode==='drag'||gest.mode==='swipe'))e.preventDefault()},{passive:false});
+function gMove(e){const g=gest;if(!g)return;const dx=e.clientX-g.x0,dy=e.clientY-g.y0;g.y=e.clientY;
+if(!g.mode){if(dx<-12&&Math.abs(dx)>Math.abs(dy)*1.4){clearTimeout(g.timer);g.mode='swipe';if(g.q)qdrag=true;g.row.classList.add('swiping')}
+else if(g.mouse&&Math.abs(dy)>6&&Math.abs(dy)>Math.abs(dx))gDrag();else if(Math.hypot(dx,dy)>9)clearTimeout(g.timer);}
+if(g.mode==='swipe')g.row.style.setProperty('--sx',Math.min(0,dx)+'px');else if(g.mode==='drag')gPlace()}
+function gEnd(e){const g=gest;if(!g)return;gOff();clearTimeout(g.timer);cancelAnimationFrame(g.raf);gest=null;
+if(!g.mode)return;noClick=true;setTimeout(()=>noClick=false,80);
+if(g.mode==='drag'){g.row.classList.remove('lift');qdrag=false;qDirty=false;if(g.moved)gReorder(g);else if(g.q)renderDeck();return}
+const w=g.row.offsetWidth,dx=parseFloat(g.row.style.getPropertyValue('--sx'))||0,gone=e.type!=='pointercancel'&&dx<-Math.max(90,w*.33);
+g.row.classList.add('snap');g.row.style.setProperty('--sx',(gone?-w:0)+'px');
+setTimeout(()=>{g.row.classList.remove('swiping','snap');g.row.style.removeProperty('--sx');qdrag=false;qDirty=false;if(gone)gRemove(g);else if(g.q)renderDeck()},200)}
+function gReorder(g){if(g.q){const order=[...g.list.children].map(x=>+x.dataset.qi),old=S.queue;S.qi=order.indexOf(S.qi);S.queue=order.map(i=>old[i]);S.ctx=S.queue.slice();renderDeck();toast('순서를 바꿨어요');return}
+const p=curPl();if(!p||p.demo)return;const shown=[...g.list.children].map(x=>x.dataset.id),rest=p.ids.filter(id=>!shown.includes(id));p.ids=[...shown,...rest];savePl();renderList();toast('플리 순서를 바꿨어요')}
+function gRemove(g){if(g.q){const i=+g.row.dataset.qi;if(i===S.qi){renderDeck();toast('지금 재생 중인 곡은 뺄 수 없어요');return}
+const id=S.queue[i],qBefore=S.queue.slice();S.queue.splice(i,1);if(i<S.qi)S.qi--;S.ctx=S.queue.slice();renderDeck();
+toast(`'${getT(id)?.title||'곡'}'을 재생 목록에서 뺐어요`,'되돌리기',()=>{const cur=S.queue[S.qi];S.queue=qBefore;const k=qBefore.indexOf(cur);S.qi=k>=0?k:0;S.ctx=S.queue.slice();renderDeck()});return}
+const p=curPl();if(!p||p.demo)return;const id=g.row.dataset.id,before=p.ids.slice();p.ids=p.ids.filter(x=>x!==id);savePl();renderAll();
+toast(`'${getT(id)?.title||'곡'}'을 플리에서 뺐어요`,'되돌리기',()=>{p.ids=before;savePl();renderAll()})}
+
 function closePop(){$('#pop').classList.remove('show')}
 function openPop(btn,id){const t=getT(id);if(!t)return;const p=curPl(),pop=$('#pop');
-pop.innerHTML=`<div class="lb">${esc(t.title)}</div><button data-p="next">${ic('next')}다음에 재생</button><button data-p="edit">${ic('image')}정보·표지 바꾸기</button><button data-p="album">${ic('album')}앨범에 넣기</button>${curAl()?`<button data-p="unal">${ic('close')}이 앨범에서 빼기</button>`:''}<hr><div class="lb">플리에 담기</div>`+S.playlists.map(x=>`<button data-p="add" data-pl="${esc(x.id)}"><span class="sw" style="background:hsl(${hueOf(x)} 70% 52%)"></span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(x.name)}</span>${x.ids.includes(id)?ic('check'):''}</button>`).join('')+`<button data-p="newadd">${ic('plus')}새 플리에 담기</button>`+(p&&!p.demo?`<hr><button data-p="rm">${ic('close')}이 플리에서 빼기</button>`:'')+(t.demo?'':`<hr><button data-p="del" class="dg">${ic('trash')}창고에서 삭제</button>`);
+pop.innerHTML=`<div class="lb">${esc(t.title)}</div><button data-p="next">${ic('next')}다음에 재생</button><button data-p="edit">${ic('image')}정보·표지 바꾸기</button><button data-p="album">${ic('album')}앨범에 넣기</button>${curAl()?`<button data-p="unal">${ic('close')}이 앨범에서 빼기</button>`:''}`+(p&&!p.demo?`<hr><button data-p="rm">${ic('close')}이 플리에서 빼기</button>`:'')+(t.demo?'':`<hr><button data-p="del" class="dg">${ic('trash')}창고에서 삭제</button>`);
 pop.onclick=ev=>{const b=ev.target.closest('[data-p]');if(!b)return;closePop();const k=b.dataset.p;
 if(k==='next')playNextQ(id);else if(k==='edit')editTrack(t);else if(k==='album')albumPick([id],'');else if(k==='unal'){setAlbum([id],'');toast('앨범에서 뺐어요')}else if(k==='add')togglePl(b.dataset.pl,id);else if(k==='newadd')editPl(null,id);else if(k==='rm'){p.ids=p.ids.filter(x=>x!==id);savePl();renderAll();toast('플리에서 뺐어요')}
 else if(k==='del')modal('곡 삭제',`<p style="margin:0">'${esc(t.title)}'을(를) 창고에서 지울까요? 모든 플리에서도 빠지고 이 기기에 보관된 파일도 사라져요.</p>`,'삭제',()=>{delTrack(id)},true)};
@@ -728,27 +870,38 @@ pop.classList.add('show');const r=btn.getBoundingClientRect(),w=pop.offsetWidth,
 
 document.addEventListener('click',e=>{if(e.target.closest('#pop')||e.target.closest('#ov'))return;closePop();if(noClick||e.target.closest('[data-drag]'))return;
 const a=e.target.closest('[data-act]'),go=e.target.closest('[data-go]');
-if(go&&!(a&&go.contains(a))){S.view=go.dataset.go;S.q='';renderAll();$('#main').scrollTop=0;return}
+if(go&&!(a&&go.contains(a))){S.view=go.dataset.go;S.q='';if(S.view!=='lib'){S.editing=false;S.sel=[]}renderAll();$('#main').scrollTop=0;return}
 const q=e.target.closest('[data-qi]');if(q&&!(a&&q.contains(a))){S.qi=+q.dataset.qi;load(true);return}
 const item=e.target.closest('#list [data-id]'),id=item?.dataset.id;
-if(!a){if(item)clickTrack(id,item);return}
+const hi=e.target.closest('[data-hid]');
+if(!a){if(hi){histPlay(hi.dataset.hid);return}if(item){if(S.editing&&S.view==='lib'&&item.classList.contains('card'))toggleSel(id);else clickTrack(id,item)}return}
 const p=curPl();
 switch(a.dataset.act){
 case 'more':openPop(a,id);break;case 'pp':clickTrack(id,item);break;case 'up':move(id,-1);break;case 'dn':move(id,1);break;
 case 'import':$('#file').dataset.mode=a.dataset.mode||'';$('#file').click();break;case 'edital':{const al=curAl();if(al)editAlbum(al);break}case 'newpl':editPl(null);break;case 'addto':openPicker();break;case 'editpl':if(p&&!p.demo)editPl(p);break;
 case 'kind':S.kind=a.dataset.k;renderHead();renderList();break;
-case 'playall':playCtx(viewIds(),null,vname(),false);break;case 'shufall':playCtx(viewIds(),null,vname(),true);break;case 'shufhome':playCtx(shelf().map(t=>t.id),null,'음악 창고',true);break;
+case 'playall':playCtx(viewIds(),null,vname(),false);break;case 'shufall':playCtx(viewIds(),null,vname(),true);break;case 'shufhome':playCtx(shelf().map(t=>t.id),null,'파일 창고',true);break;
 case 'delpl':if(p&&!p.demo)modal('플리 삭제',`<p style="margin:0">'${esc(p.name)}' 플리를 지울까요? 곡은 창고에 그대로 남아요.</p>`,'삭제',()=>{S.playlists=S.playlists.filter(x=>x!==p);dropUrls('pl:'+p.id);cloudDel('p',p.id,[p.coverId]);S.view='home';savePl();renderAll()},true);break;
 case 'toggle':toggle();break;case 'next':next(false);break;case 'prev':prev();break;
 case 'fs':{const v=audio;try{if(v.requestFullscreen)v.requestFullscreen().catch(()=>{if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();else toast('이 화면에서는 전체 화면을 쓸 수 없어요')});else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()}catch(err){toast('이 화면에서는 전체 화면을 쓸 수 없어요')}break}
 case 'shuf':{S.shuffle=!S.shuffle;const cur=S.queue[S.qi];if(S.ctx.length&&cur){if(S.shuffle){S.queue=[cur,...shuffled(S.ctx.filter(x=>x!==cur))];S.qi=0}else{S.queue=S.ctx.slice();S.qi=Math.max(0,S.queue.indexOf(cur))}}savePrefs();renderDeck();toast(S.shuffle?'셔플 켬':'셔플 끔');break}
 case 'rep':S.repeat={off:'all',all:'one',one:'off'}[S.repeat];savePrefs();renderDeck();toast({off:'반복 끔',all:'전체 반복',one:'한 곡 반복'}[S.repeat]);break;
-case 'opendeck':if(isPhone())$('#deck').classList.add('open');else setMode('mid');break;case 'mode':setMode(a.dataset.m);break;
+case 'opendeck':if(isPhone())$('#deck').classList.add('open');else setMode('mid');break;case 'edit':S.editing=!S.editing;if(!S.editing)S.sel=[];renderHead();renderList();break;
+case 'selall':for(const t of libList())if(!S.sel.includes(t.id))S.sel.push(t.id);syncSel();break;
+case 'selclear':S.sel=[];syncSel();break;
+case 'seldone':S.editing=false;S.sel=[];renderHead();renderList();break;
+case 'selplay':case 'selshuf':{let ids=S.sel.filter(getT);if(!ids.length)break;if(a.dataset.act==='selshuf')ids=shuffled(ids);addHist(ids);S.editing=false;S.sel=[];playExact(ids,'즉석 플리');renderAll();toast('바로 듣는 중 · 기록에 남겼어요');break}
+case 'hplay':if(hi)histPlay(hi.dataset.hid);break;
+case 'hdel':if(hi){const k=hi.dataset.hid;S.hist=S.hist.filter(h=>h.id!==k);S.histGone.push(k);saveHist();renderList();if(S.view==='hist')renderHead();toast('기록에서 지웠어요')}break;
+case 'mode':if(a.dataset.m)setMode(a.dataset.m);else pickMode();break;
 case 'dtopscroll':$('#dscroll').scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});break;
 case 'qrm':{const i=+q.dataset.qi;S.queue.splice(i,1);if(i<S.qi)S.qi--;S.ctx=S.queue.slice();renderDeck();toast('재생 목록에서 뺐어요');break}
 case 'qshuf':S.queue=[...S.queue.slice(0,S.qi+1),...shuffled(S.queue.slice(S.qi+1))];S.ctx=S.queue.slice();renderDeck();toast('다음 곡들을 섞었어요');break;
 case 'qclear':S.queue=S.queue.slice(0,S.qi+1);S.ctx=S.queue.slice();renderDeck();toast('다음 곡을 비웠어요');break;
 case 'qsave':editPl(null,null,[...new Set(S.queue.filter(getT))]);break;case 'closedeck':$('#deck').classList.remove('open');break}});
+const goSearch=v=>{S.view='lib';S.kind='all';S.q=v;renderAll();$('#main').scrollTop=0;const q=$('#q');if(q){q.focus();q.setSelectionRange(v.length,v.length)}};
+$('#main').addEventListener('keydown',e=>{if(e.target.id==='hq'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();goSearch(e.target.value.trim())}});
+$('#main').addEventListener('search',e=>{if(e.target.id==='hq'&&e.target.value.trim())goSearch(e.target.value.trim())},true);
 $('#main').addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;renderList()}});
 $('#main').addEventListener('change',e=>{if(e.target.id==='asort'){S.asort=e.target.value;renderList();return}if(e.target.id==='sort'){S.sort=e.target.value;savePrefs();renderList()}});
 $('#file').addEventListener('change',e=>{const mode=e.target.dataset.mode;e.target.dataset.mode='';importFiles(e.target.files).then(ids=>{if(mode==='album'&&ids&&ids.length){const t0=getT(ids[0]);albumPick(ids,ids.every(id=>akey(getT(id)?.album)===akey(t0?.album))?(t0?.album||''):'',true)}});e.target.value=''});
@@ -762,14 +915,14 @@ addEventListener('dragenter',e=>{if(hasFiles(e)){dc++;$('#drop').classList.add('
 addEventListener('dragleave',()=>{dc=Math.max(0,dc-1);if(!dc)$('#drop').classList.remove('show')});
 addEventListener('dragover',e=>e.preventDefault());
 addEventListener('drop',e=>{e.preventDefault();dc=0;$('#drop').classList.remove('show');if(e.dataTransfer?.files?.length)importFiles(e.dataTransfer.files)});
-addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#ov').classList.contains('show')||$('#pop').classList.contains('show')){closePop();closeModal();return}$('#deck').classList.remove('open');if(S.deck==='full'&&!isPhone())setMode('mid');return}if($('#ov').classList.contains('show')||e.target.matches('input,select,textarea'))return;
+addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#ov').classList.contains('show')||$('#pop').classList.contains('show')){closePop();closeModal();return}if(S.editing){S.editing=false;S.sel=[];renderHead();renderList();return}$('#deck').classList.remove('open');if(S.deck==='full'&&!isPhone())setMode('mid');return}if($('#ov').classList.contains('show')||e.target.matches('input,select,textarea'))return;
 if(e.code==='Space'){e.preventDefault();toggle()}else if(e.key==='ArrowRight'&&e.shiftKey)next(false);else if(e.key==='ArrowLeft'&&e.shiftKey)prev()});
 document.querySelectorAll('[data-ic]').forEach(el=>el.insertAdjacentHTML('afterbegin',ic(el.dataset.ic)));
 addEventListener('resize',closePop);
 $('#grip').addEventListener('pointerdown',startDrag);$('#pull').addEventListener('pointerdown',startDrag);applyMode();
 try{const io=new IntersectionObserver(([en])=>$('#deck').classList.toggle('scrolled',!en.isIntersecting||en.intersectionRatio<.3),{root:$('#dscroll'),threshold:[0,.3,.6,1]});io.observe($('#plate'))}catch(e){}
 
-try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!window.__rl){window.__rl=1;location.reload()}});navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(g=>g.update()).catch(()=>{})}}catch(e){}
 (async()=>{makeDemos();db=await openDB();
 if(db){try{const all=await tx('tracks','readonly',st=>st.getAll());S.tracks.push(...(all||[]).map(t=>({kind:'audio',cover:null,...t})));const pl=await tx('kv','readonly',st=>st.get('playlists'));S.playlists=Array.isArray(pl)?pl:[];S.playlists.forEach(p=>{if(p.synced)p._sig=plSig(p)})}catch(e){S.persist=false}}
 else{S.persist=false;S.playlists=ls('plli-pl',[])}
